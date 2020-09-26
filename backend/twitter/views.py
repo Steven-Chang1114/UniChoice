@@ -12,11 +12,14 @@ import tweepy
 from textblob import TextBlob
 import pickle
 from .config import consumer_key, consumer_secret, access_token, access_token_secret
+import utils
 
 # Twitter
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
+
+#generate keyword for health index
 
 # Create your views here.
 @api_view(["GET"])
@@ -24,7 +27,37 @@ def getHealthIndex(request):
     count = 0
     scoreSum = 0
 
-    for tweet in tweepy.Cursor(api.search, q=request.GET.get("text") + " covid" + " -filter:retweets", rpp=5, lang="en", tweet_mode='extended').items(50):
+    anyWord = ["covid", "health", "social distancing", "virus", "safety"]
+    allWord = request.GET.get("text")
+
+    utils.advancedSearch()
+
+    for tweet in tweepy.Cursor(api.search,
+                               q=utils.advancedSearch(allWord, any=anyWord) + " covid" + " -filter:retweets", rpp=5,
+                               lang="en",
+                               tweet_mode='extended').items(50):
+        text = TextBlob(tweet.full_text)
+        scoreSum += text.sentiment.polarity
+        count += 1
+
+    avgScore = scoreSum / count
+    return JsonResponse({"score": avgScore});
+
+@api_view["GET"])
+
+
+@api_view(["GET"])
+def getHealthIndexAndChange(request):
+    count = 0
+    scoreSum = 0
+
+    anyWord = ["covid", "health", "social distancing", "virus", "safety"]
+    allWord = request.GET.get("text")
+
+    utils.advancedSearch()
+
+    for tweet in tweepy.Cursor(api.search, q=utils.advancedSearch(allWord, any = anyWord) + " covid" + " -filter:retweets", rpp=5, lang="en",
+                               tweet_mode='extended').items(50):
         text = TextBlob(tweet.full_text)
         scoreSum += text.sentiment.polarity
         count += 1
