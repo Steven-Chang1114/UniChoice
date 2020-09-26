@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import Button from '@material-ui/core/Button';
 
 import axios from "axios"
 
@@ -150,10 +151,13 @@ export default function ImageAvatars(props) {
 
           <Grid container spacing={4}>
             {/* Chart */}
-            <Grid xs={6} md={2} lg={2} className={classes.container}>
+            <Grid item xs={6} md={2} lg={2} className={classes.container}>
                 <Avatar alt="Logo" src={avatar} className={classes.large}/>
-                <Typography component="p" variant="h6" style={{margin: "20px 0"}}>
+                <Typography component="p" style={{margin: "20px 0"}}>
                     {props.searchTerm}
+                    <Button variant="outlined" color="primary" style={{margin: "50px, 0"}}>
+                      Primary
+                    </Button>
                 </Typography>         
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
