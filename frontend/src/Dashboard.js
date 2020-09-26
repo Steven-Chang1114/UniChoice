@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Status from './Status';
 import Comments from './Comments';
 import Chart from './Chart';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 
 import axios from "axios"
@@ -145,30 +145,33 @@ export default function ImageAvatars(props) {
 
   return (
     <div className={classes.root}>
-        <Avatar alt="Logo" src={avatar} className={classes.large}/>
         
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+
+          <Grid container spacing={4}>
             {/* Chart */}
+            <Grid xs={6} md={2} lg={2} className={classes.container}>
+                <Avatar alt="Logo" src={avatar} className={classes.large}/>
+                <Typography component="p" variant="h6" style={{margin: "20px 0"}}>
+                    {props.searchTerm}
+                </Typography>         
+            </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
                 <Status name={props.searchTerm}/>
               </Paper>
             </Grid>
 
-            <Grid item xs={12} md={8} lg={9}>
+            <Grid item xs={12} md={8} lg={7}>
               <Paper className={fixedHeightPaper}>
                 <Chart />
               </Paper>
             </Grid>
             {/* Recent Deposits */}
-            
-            {/* Recent Orders */}
             <Grid item xs={12}>
-              <Paper className={classes.paper}>
                 <Comments />
-              </Paper>
             </Grid>
+            {/* Recent Orders */}
           </Grid>
         </Container>
       
