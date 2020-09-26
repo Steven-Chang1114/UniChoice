@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tab from '@material-ui/core/Tab';
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HeadNav() {
   const classes = useStyles();
-  const [value, setValue] = React.useState('2');
+  const [value, setValue] = React.useState('1');
   const [searchTerm, setSearchTerm] = React.useState(null);
   const [country, setCountry] = React.useState({
     label: "United States",
@@ -73,7 +73,7 @@ export default function HeadNav() {
 
         <Container maxWidth="xl">
             <TabPanel value="2">
-              <DashBoard searchTerm = "TsingHua University"/>
+              <DashBoard searchTerm = {searchTerm}/>
             </TabPanel>
         </Container>
         
