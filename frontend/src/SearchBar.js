@@ -26,13 +26,11 @@ class SearchBar extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log(this.props.country.code)
     this.setState({collegeData: this.state.allData.filter(obj => obj.alpha_two_code === this.props.country.code)})
     //console.log(object)
   }
 
   componentDidUpdate = () => {
-    console.log("CHANGE")
     // let json = require("./data/data.json")
     // let object = JSON.parse(JSON.stringify(json)
     let newData = this.state.allData.filter(obj => obj.alpha_two_code === this.props.country.code)

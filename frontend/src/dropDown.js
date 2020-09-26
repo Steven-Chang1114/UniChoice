@@ -316,7 +316,7 @@ export default function DropDown(props) {
         }}
       >
         {options.map((option) => (
-          <MenuItem key={option.code} selected={option.label === seletect.label} onClick={(e) => handleClose(e, option.label, option.code)}>
+          <MenuItem key={'_' + Math.random().toString(36).substr(2, 9)} selected={option.label === seletect.label} onClick={(e) => handleClose(e, option.label, option.code)}>
             <span>{countryToFlag(option.code)}</span>
             {option.label}
           </MenuItem>
