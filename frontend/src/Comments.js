@@ -34,31 +34,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Comments() {
-  const classes = useStyles();
-  const [tweets, setTweets] = useState([]);
+  const [tweets, setTweets] = useState(null);
 
   useEffect(() => {
     // code to run on component mount
     async function fetchTweets(){
         const url = "https://twitter.com/Interior/status/463440424141459456"
-        const response = await axios.get(`https://cors-anywhere.herokuapp.com/https://publish.twitter.com/oembed?url=${url}?maxwidth=250?align=left`)
+        const response = await axios.get(`https://cors-anywhere.herokuapp.com/https://publish.twitter.com/oembed?url=${url}`)
 
-        console.log(response.data.html)
-        setTweets([response.data.html])
+        console.log(response.data)
+        setTweets(response.data.html)
         console.log(tweets)
+        console.log("RUN!!!")
     }
 
     fetchTweets();
    },[])
 
-
+   console.log(tweets)
   return (
     <React.Fragment>
-    <div style={{display: "inline"}}>
+    <div style={{display: "flex", justifyContent: "space-around", flexDirection: "row", flexWrap: "wrap"}}>
     <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Sunsets don&#39;t get much better than this one over <a href="https://twitter.com/GrandTetonNPS?ref_src=twsrc%5Etfw">@GrandTetonNPS</a>. <a href="https://twitter.com/hashtag/nature?src=hash&amp;ref_src=twsrc%5Etfw">#nature</a> <a href="https://twitter.com/hashtag/sunset?src=hash&amp;ref_src=twsrc%5Etfw">#sunset</a> <a href="http://t.co/YuKy2rcjyU">pic.twitter.com/YuKy2rcjyU</a></p>&mdash; US Department of the Interior (@Interior) <a href="https://twitter.com/Interior/status/463440424141459456?ref_src=twsrc%5Etfw">May 5, 2014</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Sunsets don&#39;t get much better than this one over <a href="https://twitter.com/GrandTetonNPS?ref_src=twsrc%5Etfw">@GrandTetonNPS</a>. <a href="https://twitter.com/hashtag/nature?src=hash&amp;ref_src=twsrc%5Etfw">#nature</a> <a href="https://twitter.com/hashtag/sunset?src=hash&amp;ref_src=twsrc%5Etfw">#sunset</a> <a href="http://t.co/YuKy2rcjyU">pic.twitter.com/YuKy2rcjyU</a></p>&mdash; US Department of the Interior (@Interior) <a href="https://twitter.com/Interior/status/463440424141459456?ref_src=twsrc%5Etfw">May 5, 2014</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
 
     </React.Fragment>
