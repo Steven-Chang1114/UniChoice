@@ -55,6 +55,7 @@
     "react-dev-utils": "^10.2.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
+    "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "resolve": "1.15.0",
