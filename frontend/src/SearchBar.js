@@ -18,15 +18,25 @@ const MyComponent = styled('div')({
 
 @withStyles(styles)
 class SearchBar extends React.Component {
+  onSubmitHandler = (e) => {
+    e.preventDefault();
+    //Add autoComplete
+    console.log("SUbmit");
+    this.props.onChangeValue();
+  }
+
+  onInputChange = (e) => {
+    console.log(e.target.value)
+  }
 
   render(){
     return (
       <MyComponent>
-        <form className={this.props.classes.root} noValidate autoComplete="off" onSubmit={e => console.log("submit")}>
+        <form className={this.props.classes.root} noValidate autoComplete="off" onSubmit={this.onSubmitHandler}>
           <Typography variant="h2" align="center" gutterBottom>
             University Search
           </Typography>
-          <TextField id="outlined-basic" label="How's the COVID protection done by" variant="outlined" />
+          <TextField onChange={this.onInputChange} id="outlined-basic" label="How's the COVID protection done by" variant="outlined" />
         </form>
       </MyComponent>
   

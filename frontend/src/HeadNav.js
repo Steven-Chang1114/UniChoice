@@ -24,6 +24,10 @@ export default function HeadNav() {
     setValue(newValue);
   };
 
+  const onChangeValue = () => {
+    setValue("2");
+  }
+
   return (
     <div className={classes.root}>
       <TabContext value={value}>
@@ -37,7 +41,7 @@ export default function HeadNav() {
 
         <Container maxWidth="md">
             <TabPanel value="1">
-                <SearchBar />
+                <SearchBar onChangeValue={onChangeValue}/>
             </TabPanel>
             <TabPanel value="2">
                 Item Two
