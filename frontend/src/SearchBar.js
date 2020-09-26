@@ -4,6 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 const styles = {
   root: {
@@ -87,6 +89,11 @@ class SearchBar extends React.Component {
           
             )}
           />
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Button variant="outlined" color="primary" type="submit">
+              Search
+            </Button>
+          </Grid>
          
         </form>
       </MyComponent>
