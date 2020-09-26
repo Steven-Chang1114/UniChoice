@@ -5,7 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Status from './Status';
+import Comments from './Comments';
+import Chart from './Chart';
 import Paper from '@material-ui/core/Paper';
+import Container from '@material-ui/core/Container';
 import clsx from 'clsx';
 
 import axios from "axios"
@@ -143,15 +146,31 @@ export default function ImageAvatars(props) {
   return (
     <div className={classes.root}>
         <Avatar alt="Logo" src={avatar} className={classes.large}/>
-
-
-        <Grid item xs={12} md={4} lg={3}>
+        
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+            {/* Chart */}
+            <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
                 <Status name={props.searchTerm}/>
               </Paper>
-        </Grid>
+            </Grid>
 
-
+            <Grid item xs={12} md={8} lg={9}>
+              <Paper className={fixedHeightPaper}>
+                <Chart />
+              </Paper>
+            </Grid>
+            {/* Recent Deposits */}
+            
+            {/* Recent Orders */}
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Comments />
+              </Paper>
+            </Grid>
+          </Grid>
+        </Container>
       
     </div>
   );

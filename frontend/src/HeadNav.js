@@ -71,7 +71,7 @@ export default function HeadNav() {
             </TabPanel>
         </Container>
 
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
             <TabPanel value="2">
               <DashBoard searchTerm = "Harvard University"/>
             </TabPanel>
