@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
 
 const styles = {
   root: {
@@ -49,8 +50,59 @@ class SearchBar extends React.Component {
     e.preventDefault();
     //Add autoComplete
     //console.log(e.target.value);
+
+    this.submitHandler();
+
     this.props.onChangeValue(this.state.term);
   }
+
+   // after click "Analysis"
+   submitHandler = () => {
+    this.setState({progressBar: true});
+    this.setState({submitted: false});
+    var positive = 0
+    var negative = 0
+    var neutral = 0
+    var self = this;
+    try {        
+      axios.get('http://localhost:8000/analyzehashtag', {
+          params: {
+              text: this.state.hashtag
+          }
+      }).then(function(response) {
+          negative = response.data.negative
+          positive = response.data.positive
+          neutral = response.data.neutral
+          self.setState({submitted: true});
+          self.setState({progressBar: false});
+          self.setState({series: [negative, positive, neutral]});
+      });
+      } catch(e) {
+        console.log(e);
+      }
+    
+    try {        
+    var url = "https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&search=" + this.state.hashtag + "&limit=1&format=json"
+      axios.get(url).then(function(response) {
+          self.setState({hashtag_desc: response.data[2][0]});
+      });
+      } catch(e) {
+        console.log(e);
+      }
+    
+    try {        
+      axios.get('http://localhost:8000/gettweets', {
+          params: {
+              text: this.state.hashtag
+          }
+      }).then(function(response) {
+          self.setState({tweets: response.data.results});
+      });
+      } catch(e) {
+        console.log(e);
+      }
+    
+    }
 
   onInputChange = (event, value) => {
     this.setState({
