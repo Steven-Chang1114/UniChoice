@@ -1,11 +1,13 @@
 import React from 'react';
-import SearchBar from './SearchBar'
+//import BottomNav from './BottomNav'
+import HeadNav from './HeadNav'
+
+
 
 function App() {
   return (
     <div>
-      Hello
-
+      <HeadNav/>
     </div>
   );
 }
