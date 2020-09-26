@@ -19,13 +19,15 @@ const useStyles = makeStyles((theme) => ({
 export default function HeadNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState('1');
+  const [searchTerm, setSearchTerm] = React.useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const onChangeValue = () => {
+  const onChangeValue = (term) => {
     setValue("2");
+    setSearchTerm(term);
   }
 
   return (
@@ -44,7 +46,7 @@ export default function HeadNav() {
                 <SearchBar onChangeValue={onChangeValue}/>
             </TabPanel>
             <TabPanel value="2">
-                Item Two
+                {searchTerm}
             </TabPanel>
             <TabPanel value="3">
                 Item Three
