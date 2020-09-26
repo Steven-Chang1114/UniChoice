@@ -18,18 +18,29 @@ const MyComponent = styled('div')({
 });
 
 @withStyles(styles)
-class SearchBar extends React.PureComponent {
+class SearchBar extends React.Component {
   state = {
     term: null,
-    collegeData: [],
-    
+    collegeData: [], 
+    allData: JSON.parse(JSON.stringify(require("./data/data.json")))
   }
 
   componentDidMount = () => {
-    let json = require("./data/data.json")
-    let object = JSON.parse(JSON.stringify(json))
-    this.setState({collegeData: object})
+    this.setState({collegeData: this.state.allData.filter(obj => obj.alpha_two_code === this.props.country.code)})
     //console.log(object)
+  }
+
+  componentDidUpdate = () => {
+    // let json = require("./data/data.json")
+    // let object = JSON.parse(JSON.stringify(json)
+    let newData = this.state.allData.filter(obj => obj.alpha_two_code === this.props.country.code)
+    
+    if(newData.length !== this.state.collegeData.length) {
+      //console.log(newData)
+      this.setState({collegeData: newData})
+    }else{
+      //console.log(111)
+    }
   }
 
   onSubmitHandler = (e) => {
@@ -53,14 +64,16 @@ class SearchBar extends React.PureComponent {
       <MyComponent>
         <form className={this.props.classes.root} noValidate autoComplete="off" onSubmit={this.onSubmitHandler}>
           <Typography variant="h2" align="center" gutterBottom>
-            University Search
+            University Search ({this.props.country.label})
           </Typography>
           <Autocomplete
             freeSolo
             id="free-solo-2-demo"
             disableClearable
             onChange={this.onInputChange}
-            options={this.state.collegeData.map((option) => option.name)}
+            options={this.state.collegeData
+                      .filter(el => el.alpha_two_code === this.props.country.code)
+                      .map((option) => option.name)}
             renderInput={(params) => (
           <div>
           <TextField

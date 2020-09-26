@@ -205,7 +205,7 @@ const options = [
     { code: 'SG', label: 'Singapore', phone: '65' },
     { code: 'SH', label: 'Saint Helena', phone: '290' },
     { code: 'SI', label: 'Slovenia', phone: '386' },
-    { code: 'SJ', label: 'Svalbard and Jan Mayen', phone: '47' },
+    { code: 'NO', label: 'Norway', phone: '47' },
     { code: 'SK', label: 'Slovakia', phone: '421' },
     { code: 'SL', label: 'Sierra Leone', phone: '232' },
     { code: 'SM', label: 'San Marino', phone: '378' },
@@ -232,14 +232,13 @@ const options = [
     { code: 'TR', label: 'Turkey', phone: '90' },
     { code: 'TT', label: 'Trinidad and Tobago', phone: '1-868' },
     { code: 'TV', label: 'Tuvalu', phone: '688' },
-    { code: 'TW', label: 'Taiwan, Province of China', phone: '886' },
     { code: 'TZ', label: 'United Republic of Tanzania', phone: '255' },
     { code: 'UA', label: 'Ukraine', phone: '380' },
     { code: 'UG', label: 'Uganda', phone: '256' },
     { code: 'US', label: 'United States', phone: '1', suggested: true },
     { code: 'UY', label: 'Uruguay', phone: '598' },
     { code: 'UZ', label: 'Uzbekistan', phone: '998' },
-    { code: 'VA', label: 'Holy See (Vatican City State)', phone: '379' },
+    { code: 'VA', label: 'Vatican City State', phone: '379' },
     { code: 'VC', label: 'Saint Vincent and the Grenadines', phone: '1-784' },
     { code: 'VE', label: 'Venezuela', phone: '58' },
     { code: 'VG', label: 'British Virgin Islands', phone: '1-284' },
@@ -256,9 +255,9 @@ const options = [
     { code: 'ZW', label: 'Zimbabwe', phone: '263' },
 ]
 
-const ITEM_HEIGHT = 48;
+const ITEM_HEIGHT = 80;
 
-export default function DropDown() {
+export default function DropDown(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [seletect, setSeletect] = React.useState({
       label: "United States",
@@ -273,12 +272,16 @@ export default function DropDown() {
 
   const handleClose = (e, label, code) => {
     setAnchorEl(null);
-    const country = {
+    if(label !== "backdropClick"){
+      const country = {
         label, 
         code
-    };
-    setSeletect(country);
-    //Fot future filter
+      };
+      setSeletect(country);
+      //Fot future filter
+      props.changeCountry(country);
+    }
+    
   };
 
   function countryToFlag(isoCode) {
@@ -313,7 +316,7 @@ export default function DropDown() {
         }}
       >
         {options.map((option) => (
-          <MenuItem key={option.code} selected={option.label === seletect.label} onClick={(e) => handleClose(e, option.label, option.code)}>
+          <MenuItem key={'_' + Math.random().toString(36).substr(2, 9)} selected={option.label === seletect.label} onClick={(e) => handleClose(e, option.label, option.code)}>
             <span>{countryToFlag(option.code)}</span>
             {option.label}
           </MenuItem>
