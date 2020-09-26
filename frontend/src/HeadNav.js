@@ -8,6 +8,7 @@ import TabPanel from '@material-ui/lab/TabPanel';
 import { Container } from '@material-ui/core';
 
 import SearchBar from "./SearchBar"
+import DropDown from "./dropDown"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +36,9 @@ export default function HeadNav() {
       <TabContext value={value}>
         <AppBar position="static">
           <TabList onChange={handleChange} aria-label="simple tabs example">
+            <DropDown justify="flex-end"/>
             <Tab label="Main" value="1" />
-            <Tab label="Item Two" value="2" />
-            <Tab label="Item Three" value="3" />
+            <Tab label="Result" value="2" />
           </TabList>
         </AppBar>
 
@@ -49,7 +50,7 @@ export default function HeadNav() {
                 {searchTerm}
             </TabPanel>
             <TabPanel value="3">
-                Item Three
+                
             </TabPanel>
         </Container>
 

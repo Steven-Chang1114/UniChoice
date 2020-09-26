@@ -18,10 +18,11 @@ const MyComponent = styled('div')({
 });
 
 @withStyles(styles)
-class SearchBar extends React.Component {
+class SearchBar extends React.PureComponent {
   state = {
     term: null,
-    collegeData: []
+    collegeData: [],
+    
   }
 
   componentDidMount = () => {
@@ -42,7 +43,7 @@ class SearchBar extends React.Component {
     this.setState({
       term: value
     }, () => {
-      console.log(this.state.term)
+      //Process the name
     });
   }
   //<TextField onChange={this.onInputChange} id="outlined-basic" label="How's the COVID protection done by" variant="outlined" />
@@ -54,7 +55,6 @@ class SearchBar extends React.Component {
           <Typography variant="h2" align="center" gutterBottom>
             University Search
           </Typography>
-          
           <Autocomplete
             freeSolo
             id="free-solo-2-demo"
@@ -62,6 +62,7 @@ class SearchBar extends React.Component {
             onChange={this.onInputChange}
             options={this.state.collegeData.map((option) => option.name)}
             renderInput={(params) => (
+          <div>
           <TextField
             {...params}
             label="How's the COVID protection done by"
@@ -69,6 +70,8 @@ class SearchBar extends React.Component {
             variant="outlined"
             InputProps={{ ...params.InputProps, type: 'search' }}
               />
+          </div>
+          
             )}
           />
          
