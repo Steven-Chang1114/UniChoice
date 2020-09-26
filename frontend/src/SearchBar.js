@@ -28,7 +28,7 @@ class SearchBar extends React.PureComponent {
   componentDidMount = () => {
     let json = require("./data/data.json")
     let object = JSON.parse(JSON.stringify(json))
-    this.setState({collegeData: object})
+    this.setState({collegeData: object.filter(obj => obj.alpha_two_code === this.props.country.code)})
     //console.log(object)
   }
 
@@ -53,7 +53,7 @@ class SearchBar extends React.PureComponent {
       <MyComponent>
         <form className={this.props.classes.root} noValidate autoComplete="off" onSubmit={this.onSubmitHandler}>
           <Typography variant="h2" align="center" gutterBottom>
-            University Search
+            University Search ({this.props.country.label})
           </Typography>
           <Autocomplete
             freeSolo

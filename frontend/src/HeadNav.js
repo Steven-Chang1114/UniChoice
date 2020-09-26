@@ -21,6 +21,10 @@ export default function HeadNav() {
   const classes = useStyles();
   const [value, setValue] = React.useState('1');
   const [searchTerm, setSearchTerm] = React.useState(null);
+  const [country, setCountry] = React.useState({
+    label: "United States",
+    code: "US"
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -31,12 +35,20 @@ export default function HeadNav() {
     setSearchTerm(term);
   }
 
+  const changeCountry = ({label, code}) => {
+    setCountry({
+      label,
+      code
+    })
+
+  }
+
   return (
     <div className={classes.root}>
       <TabContext value={value}>
         <AppBar position="static">
           <TabList onChange={handleChange} aria-label="simple tabs example">
-            <DropDown justify="flex-end"/>
+            <DropDown justify="flex-end" changeCountry={changeCountry}/>
             <Tab label="Main" value="1" />
             <Tab label="Result" value="2" />
           </TabList>
@@ -44,7 +56,7 @@ export default function HeadNav() {
 
         <Container maxWidth="md">
             <TabPanel value="1">
-                <SearchBar onChangeValue={onChangeValue}/>
+                <SearchBar country={country} onChangeValue={onChangeValue}/>
             </TabPanel>
             <TabPanel value="2">
                 {searchTerm}

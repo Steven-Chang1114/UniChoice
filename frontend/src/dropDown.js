@@ -258,7 +258,7 @@ const options = [
 
 const ITEM_HEIGHT = 48;
 
-export default function DropDown() {
+export default function DropDown(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [seletect, setSeletect] = React.useState({
       label: "United States",
@@ -279,6 +279,7 @@ export default function DropDown() {
     };
     setSeletect(country);
     //Fot future filter
+    props.changeCountry(country);
   };
 
   function countryToFlag(isoCode) {
