@@ -44,15 +44,15 @@ export default function HeadNav() {
 
   }
 
-  // const renderResult = () => {
-  //   const data = JSON.parse(JSON.stringify(require("./data/data.json"))).filter(obj => obj.alpha_two_code === country.code).map(el => el.name)
+  const renderResult = () => {
+    const data = JSON.parse(JSON.stringify(require("./data/data.json"))).filter(obj => obj.alpha_two_code === country.code).map(el => el.name)
     
-  //   if(searchTerm !== null && data.indexOf(searchTerm) !== -1){
-  //     return <DashBoard searchTerm = {searchTerm}/>
-  //   }else{
-  //     return <h1>No access, please enter the valid University/College name :)</h1>
-  //   }
-  // }
+    if(searchTerm !== null && data.indexOf(searchTerm) !== -1){
+      return <DashBoard searchTerm = {searchTerm}/>
+    }else{
+      return <h1>No access, please enter the valid University/College name :)</h1>
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -73,7 +73,7 @@ export default function HeadNav() {
 
         <Container maxWidth="xl">
             <TabPanel value="2">
-              <DashBoard searchTerm = {searchTerm}/>
+                {renderResult()}
             </TabPanel>
         </Container>
         
