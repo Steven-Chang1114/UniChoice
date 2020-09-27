@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'p9bv3&rbv4$cnw3=-k3ntmo7)akvs2t03(^yjeu=z4@q%jyt0p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['unichoice-django-gcp.appspot.com']
 
 
 # Application definition
