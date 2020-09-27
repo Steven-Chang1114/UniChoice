@@ -1,4 +1,6 @@
 import numpy as np
+import json
+from datetime import datetime
 
 # in-place sort tweets by their timestamp, in ascending order from oldest to latest
 def sort_tweet(tweet_list, descending=True):
@@ -47,3 +49,29 @@ def percent_change(old, new):
         return 0
 
     return np.round(((new-old) / (old+1) * 100, 2))[0]
+
+
+# generate a json file with colleges' official name as key and the colloqial name as value
+def generateUniNameDict(filepath):
+    start = datetime.now()
+
+    with open('uniName.txt', 'r') as f:
+        content = f.readlines()
+    dictionary = {}
+    for line in content:
+        wordList = line.split(" " + "–" + " ")
+        if len(wordList) == 2:
+            officialName = wordList[1].strip("\n")
+            if (officialName[0:25] == "University of California,"):
+                officialNameList = [officialName]
+            else:
+                officialNameList = officialName.split(", ")
+            nickName = wordList[0]
+            for name in officialNameList:
+                if name in dictionary:
+                    dictionary[name].append(nickName)
+                else:
+                    dictionary[name] = [nickName]
+
+    # jsonFile = json.dumps(dictionary)
+    return dictionary
