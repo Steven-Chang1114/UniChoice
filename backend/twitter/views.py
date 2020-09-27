@@ -36,13 +36,18 @@ def getHealthIndex(request):
     scoreSum = 0
     anyWord = ["covid", "health", "social distancing", "virus", "safety"]
     allWord = request.GET.get("text")
+    searchKey = utils.advancedSearch(allWord, any=anyWord)
+    print("====================================")
+    print(searchKey) # debug: 1
 
     for tweet in tweepy.Cursor(api.search,
-                               q=utils.advancedSearch(allWord, any=anyWord) + " -filter:retweets",
+                               q = searchKey + " -filter:retweets",
                                rpp=5,
                                lang="en",
                                tweet_mode='extended').items(50):
         text = TextBlob(tweet.full_text)
+        print("===================")
+        print(tweet.full_text)
         scoreSum += text.sentiment.polarity
         count += 1
 

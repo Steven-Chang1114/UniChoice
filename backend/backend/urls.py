@@ -23,7 +23,7 @@ urlpatterns = [
 
 urlpatterns = [
     path('', views.homepage),
-    path('analyzehashtag', views.analyzehashtag),
+    path('getOnlineIndexAndChange', views.getOnlineIndexAndChange),
     path('getHealthIndex', views.getHealthIndex),
     path('getMoodIndex', views.getMoodIndex),
     path('getMoodIndexAndChange', views.getMoodIndexAndChange),

@@ -53,9 +53,8 @@ def percent_change(old, new):
 
 # generate a json file with colleges' official name as key and the colloqial name as value
 def generateUniNameDict(filepath):
-    start = datetime.now()
 
-    with open('uniName.txt', 'r') as f:
+    with open(filepath, 'r') as f:
         content = f.readlines()
     dictionary = {}
     for line in content:
