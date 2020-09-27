@@ -1,6 +1,8 @@
 import numpy as np
 import json
 from datetime import datetime
+import sys
+sys.path.append('./twitter')
 
 # in-place sort tweets by their timestamp, in ascending order from oldest to latest
 def sort_tweet(tweet_list, descending=True):
@@ -8,8 +10,8 @@ def sort_tweet(tweet_list, descending=True):
 
 #generate a string for the twitter api to search tweet. Note this is advanced search
 def advancedSearch(allOf, exact = None, any = None, none = None):
-    if allOf is None:
-        raise Exception("keyword cannot be empty")
+    if type(allOf)is not list:
+        raise Exception("keyword has to be list")
 
     string1 = ""
     for keyword in allOf:
@@ -53,6 +55,8 @@ def percent_change(old, new):
 
 # generate a json file with colleges' official name as key and the colloqial name as value
 def generateUniNameDict(filepath):
+
+    #debug
 
     with open(filepath, 'r') as f:
         content = f.readlines()

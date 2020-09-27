@@ -25,6 +25,8 @@ except Exception as inst:
     print(inst)
 
 
+nicknamesDict = utils.generateUniNameDict("./uniName.txt")
+
 # Home page
 def homepage(request):
     return render(request, "build/index.html") # react-frontend
@@ -34,11 +36,14 @@ def homepage(request):
 def getHealthIndex(request):
     count = 0
     scoreSum = 0
+
     anyWord = ["covid", "health", "social distancing", "virus", "safety"]
-    allWord = request.GET.get("text")
-    searchKey = utils.advancedSearch(allWord, any=anyWord)
-    print("====================================")
-    print(searchKey) # debug: 1
+    collegeName = request.GET.get("text")
+
+    if collegeName in nicknamesDict:
+        searchKey = utils.advancedSearch([], any=anyWord.extend(nicknamesDict[collegeName]))
+    else:
+        searchKey = [collegeName]
 
     for tweet in tweepy.Cursor(api.search,
                                q = searchKey + " -filter:retweets",
@@ -46,8 +51,6 @@ def getHealthIndex(request):
                                lang="en",
                                tweet_mode='extended').items(50):
         text = TextBlob(tweet.full_text)
-        print("===================")
-        print(tweet.full_text)
         scoreSum += text.sentiment.polarity
         count += 1
 
@@ -55,14 +58,24 @@ def getHealthIndex(request):
         avgScore = 0
     else:
         avgScore = scoreSum / count
+
     return JsonResponse({"score": avgScore});
 
 @api_view(["GET"])
 def getMoodIndex(request):
     count = 0
     scoreSum = 0
+
+    #nicknamesDict = utils.generateUniNameDict("./uniName.txt")
+    collegeName = request.GET.get("text")
+    if collegeName in nicknamesDict:
+        searchKey = utils.advancedSearch([], any=nicknamesDict[collegeName])
+
+    else:
+        searchKey = [collegeName]
+
     for tweet in tweepy.Cursor(api.search,
-                               q = request.GET.get("text") + " -filter:retweets",
+                               q = searchKey + " -filter:retweets",
                                rpp = 5,
                                lang="en",
                                tweet_mode="extended").items(200):
@@ -74,18 +87,19 @@ def getMoodIndex(request):
         avgScore = 0
     else:
         avgScore = scoreSum / count
+
     return JsonResponse({"score": avgScore});
 
 
 @api_view(["GET"])
 def getMoodIndexAndChange(request):
     tweets = []
-    nicknamesDict = utils.generateUniNameDict("./uniName.txt")
+    #nicknamesDict = utils.generateUniNameDict("./uniName.txt")
     collegeName = request.GET.get("text")
     if collegeName in nicknamesDict:
-        searchKey = utils.advancedSearch(collegeName, any = nicknamesDict[collegeName])
+        searchKey = utils.advancedSearch([], any = nicknamesDict[collegeName])
     else:
-        searchKey = request.GET.get("text")
+        searchKey = [collegeName]
 
     mostPositiveTweetID = ""
     maxPos = -1
@@ -97,7 +111,7 @@ def getMoodIndexAndChange(request):
                                q = searchKey + " -filter:retweets",
                                rpp = 5,
                                lang="en",
-                               tweet_mode="extended").items(200):
+                               tweet_mode="extended").items(100):
         instance = {}
         text = TextBlob(tweet.full_text)
         instance["timestamp"] = tweet.created_at
@@ -114,15 +128,17 @@ def getMoodIndexAndChange(request):
     #sort the tweets chronologically
     utils.sort_tweet(tweets)
 
+    # for t in tweets:
+    #     print(t["timestamp"])
+
     #split the data in to ten buckets
     bucketAverages = []
-
     
-    for i in range(0, 200, 10):
+    for i in range(0, 100, 5):
         bucketSum = 0
-        for j in range(i, i+10):
+        for j in range(i, i+5):
             bucketSum += tweets[j]["score"]
-        bucketAvg = bucketSum / 10
+        bucketAvg = bucketSum / 5
         bucketAverages.append(bucketAvg)
 
 
@@ -137,6 +153,17 @@ def getMoodIndexAndChange(request):
     newScore = newScoreSum / 10
     change = utils.percent_change(oldScore, newScore)
 
+
+    return_val = JsonResponse({"score": newScore,
+                         "change": change,
+                         "historical data": bucketAverages,
+                         "positive tweet id": mostPositiveTweetID,
+                         "negative tweet id": mostNegativeTweetID});
+
+    print("==============sss===========")
+    print("==============sss===========")
+    print("==============sss===========")
+
     return JsonResponse({"score": newScore,
                          "change": change,
                          "historical data": bucketAverages,
@@ -148,14 +175,14 @@ def getMoodIndexAndChange(request):
 def getHealthIndexAndChange(request):
     tweets = []
     anyWord = ["covid", "health", "social distancing", "virus", "safety"]
-    nicknamesDict = utils.generateUniNameDict("./uniName.txt")
+    #nicknamesDict = utils.generateUniNameDict("./uniName.txt")
     collegeName = request.GET.get("text")
 
     if collegeName in nicknamesDict:
         anyWord.extend(nicknamesDict[collegeName]) #debug: if this is in place
-        searchKey = utils.advancedSearch(collegeName, any = anyWord)
+        searchKey = utils.advancedSearch([], any = anyWord)
     else:
-        searchKey = utils.advancedSearch(collegeName, any = anyWord)
+        searchKey = utils.advancedSearch([collegeName], any = anyWord)
 
     mostPositiveTweetID = ""
     maxPos = -1
@@ -211,6 +238,11 @@ def getHealthIndexAndChange(request):
     newScore = newScoreSum / 10
 
     change = utils.percent_change(oldScore, newScore)
+
+    print("==============bbb===========")
+    print("==============bbb===========")
+    print("==============bbb===========")
+
     return JsonResponse({"score": newScore,
                          "change": change,
                          "historical data": bucketAverages,
@@ -221,14 +253,14 @@ def getHealthIndexAndChange(request):
 def getOnlineIndexAndChange(request):
     tweets = []
     anyWord = ["zoom", "online", "remote"]
-    nicknamesDict = utils.generateUniNameDict("./uniName.txt")
+    #nicknamesDict = utils.generateUniNameDict("./uniName.txt")
     collegeName = request.GET.get("text")
 
     if collegeName in nicknamesDict:
         anyWord.extend(nicknamesDict[collegeName]) #debug: if this is in place
-        searchKey = utils.advancedSearch(collegeName, any = anyWord)
+        searchKey = utils.advancedSearch([], any = anyWord)
     else:
-        searchKey = utils.advancedSearch(collegeName, any = anyWord)
+        searchKey = utils.advancedSearch([collegeName], any = anyWord)
 
     mostPositiveTweetID = ""
     maxPos = -1
@@ -273,6 +305,10 @@ def getOnlineIndexAndChange(request):
         newScore = 0
     else:
         newScore = newScoreSum / count
+
+    print("==============aaa===========")
+    print("==============aaa===========")
+    print("==============aaa===========")
 
     change = utils.percent_change(oldScore, newScore)
     return JsonResponse({"score": newScore,
