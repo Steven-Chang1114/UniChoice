@@ -42,4 +42,8 @@ def advancedSearch(allOf, exact = None, any = None, none = None):
     return string1
 
 def percent_change(old, new):
-    return np.round(((new-old) / old) * 100, 2)
+
+    if old == -1:
+        return 0
+
+    return np.round(((new-old) / (old+1) * 100, 2))[0]

@@ -24,4 +24,9 @@ urlpatterns = [
 urlpatterns = [
     path('', views.homepage),
     path('analyzehashtag', views.analyzehashtag),
+    path('getHealthIndex', views.getHealthIndex),
+    path('getMoodIndex', views.getMoodIndex),
+    path('getMoodIndexAndChange', views.getMoodIndexAndChange),
+    path('getHealthIndexAndChange', views.getHealthIndexAndChange),
+
 ]

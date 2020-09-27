@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Title from './Title';
@@ -22,7 +22,7 @@ const GreenTextTypography = withStyles({
     }
   })(Typography);
 
-
+// const [healthIndex, setHealthIndex] = useState(0);
  
 
 export default function Status(props) {
@@ -36,6 +36,8 @@ export default function Status(props) {
     var positive = 0
     var negative = 0
     var neutral = 0
+
+    var healthIndex = null
 
     // console.log(props.name) // works
 
@@ -53,26 +55,67 @@ export default function Status(props) {
           // self.setState({series: [negative, positive, neutral]});
 
           // TODO: handle the output
-          console.log('=============================== response:', response, " ============================")
-          console.log('=============================== negative:', negative, " ============================")
-          console.log('=============================== neutral:', neutral, " ============================")
-          console.log('=============================== positive:', positive, " ============================")
+          // console.log('=============================== negative:', negative, " ============================")
+          // console.log('=============================== neutral:', neutral, " ============================")
+          // console.log('=============================== positive:', positive, " ============================")
       });
       } catch(e) {
         console.log(e);
       }
 
     try {        
-      axios.get('https://api.twitter.com/1.1/account/verify_credentials.json', {
+      axios.get('http://localhost:8000/getHealthIndex', {
           params: {
+            text: props.name
           }
       }).then(function(response) {
-          console.log('=============================== response:', response, " ============================")
+
+          console.log('=============================== getHealthIndex:', response.data, " ============================")
       });
       } catch(e) {
         console.log(e);
       }
     
+    try {        
+      axios.get('http://localhost:8000/getMoodIndex', {
+          params: {
+            text: props.name
+          }
+      }).then(function(response) {
+          
+
+          console.log('=============================== getMoodIndex:', response.data, " ============================")
+      });
+      } catch(e) {
+        console.log(e);
+      }
+
+    try {        
+      axios.get('http://localhost:8000/getMoodIndexAndChange', {
+          params: {
+            text: props.name
+          }
+      }).then(function(response) {
+          
+
+          console.log('=============================== getMoodIndexAndChange:', response.data, " ============================")
+      });
+      } catch(e) {
+        console.log(e);
+      }
+    
+    try {        
+      axios.get('http://localhost:8000/getHealthIndexAndChange', {
+          params: {
+            text: props.name
+          }
+      }).then(function(response) {
+
+          console.log('=============================== getHealthIndexAndChange:', response.data, " ============================")
+      });
+      } catch(e) {
+        console.log(e);
+      }
     // try {        
     // var url = "https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&search=" + props.name + "&limit=1&format=json"
     //   axios.get(url).then(function(response) {
