@@ -6,4 +6,3 @@ textblob
 flask
 tweepy
 numpy
-postgresql
