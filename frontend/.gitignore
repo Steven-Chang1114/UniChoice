@@ -10,7 +10,8 @@
 
 # production
 /build
-/backend/twitter/config.py
+../backend/twitter/config.py
+../backend/twitter/__pycache__
 
 # misc
 .DS_Store

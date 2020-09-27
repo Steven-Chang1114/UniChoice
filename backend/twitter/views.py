@@ -12,12 +12,12 @@ from django.conf import settings
 import json
 from flask import jsonify
 import tweepy
-from keras.models import load_model
-from keras.preprocessing.sequence import pad_sequences
-from keras.preprocessing.text import Tokenizer
+# from keras.models import load_model
+# from keras.preprocessing.sequence import pad_sequences
+# from keras.preprocessing.text import Tokenizer
 from textblob import TextBlob
 import pickle
-import tensorflow as tf
+# import tensorflow as tf
 from .config import consumer_key, consumer_secret, access_token, access_token_secret
 
 # # Keras stuff
