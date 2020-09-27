@@ -1,0 +1,9 @@
+psycopg2
+django-heroku
+djangorestframework
+django-cors-headers
+textblob
+flask
+tweepy
+numpy
+postgresql
