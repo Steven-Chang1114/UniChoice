@@ -50,10 +50,10 @@ export default function HeadNav() {
 
   // Dashboard (result page) --> status
   const renderResult = () => {
-    const data = JSON.parse(JSON.stringify(require("./data/data.json"))).filter(obj => obj.alpha_two_code === country.code).map(el => el.name)
+    const data = JSON.parse(JSON.stringify(require("./data/data.json"))).filter(obj => obj.name === searchTerm)
     
     if(searchTerm !== null){
-      return <DashBoard searchTerm = {searchTerm}/>
+      return <DashBoard searchTerm = {data}/>
     }else{
       return <h1>No access, please enter the valid University/College name :)</h1>
     }

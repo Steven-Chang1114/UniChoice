@@ -121,6 +121,7 @@ export default function ImageAvatars(props) {
   const [avatar, setAvatar] = useState(null)
 
   useEffect(() => {
+    console.log(props.searchTerm[0].web_pages[0])
     // code to run on component mount
     async function fetchAvatar(){
         const response = await axios.get('https://api.cognitive.microsoft.com/bing/v7.0/images/search', {
@@ -130,7 +131,7 @@ export default function ImageAvatars(props) {
             params: {
               count: 10,
               mkt: 'en-US',
-              q: props.searchTerm
+              q: props.searchTerm[0].name
             }
           })
 
@@ -152,11 +153,11 @@ export default function ImageAvatars(props) {
             {/* Chart */}
             <Grid item xs={6} md={2} lg={2} className={classes.container}>
                 <Avatar alt="Logo" src={avatar} className={classes.large}/>
-                <Title>{props.searchTerm}</Title>      
+                <Title><a href={props.searchTerm[0].web_pages[0]}>{props.searchTerm[0].name}</a></Title>      
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <Status name={props.searchTerm}/>
+                <Status name={props.searchTerm[0].name}/>
               </Paper>
             </Grid>
 
