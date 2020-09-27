@@ -31,6 +31,8 @@ export default function HeadNav() {
     setValue(newValue);
   };
 
+  // after press SEARCH in search bar (i.e search page), set value to 2
+  // when value = 2, render result
   const onChangeValue = (term) => {
     setValue("2");
     setSearchTerm(term);
@@ -44,10 +46,13 @@ export default function HeadNav() {
 
   }
 
+  // && data.indexOf(searchTerm) !== -1
+
+  // Dashboard (result page) --> status
   const renderResult = () => {
     const data = JSON.parse(JSON.stringify(require("./data/data.json"))).filter(obj => obj.alpha_two_code === country.code).map(el => el.name)
     
-    if(searchTerm !== null && data.indexOf(searchTerm) !== -1){
+    if(searchTerm !== null){
       return <DashBoard searchTerm = {searchTerm}/>
     }else{
       return <h1>No access, please enter the valid University/College name :)</h1>

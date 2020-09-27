@@ -10,6 +10,7 @@
 
 # production
 /build
+/backend/twitter/config.py
 
 # misc
 .DS_Store

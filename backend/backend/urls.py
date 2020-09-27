@@ -15,7 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from twitter import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+]
+
+urlpatterns = [
+    path('', views.homepage),
+    path('analyzehashtag', views.analyzehashtag),
+    path('getHealthIndex', views.getHealthIndex),
+    path('getMoodIndex', views.getMoodIndex),
+    path('getMoodIndexAndChange', views.getMoodIndexAndChange),
+    path('getHealthIndexAndChange', views.getHealthIndexAndChange),
+
 ]
