@@ -86,26 +86,31 @@ def getMoodIndexAndChange(request):
         instance["timestamp"] = tweet.created_at
         instance["score"] = text.sentiment.polarity
         tweets.append(instance)
-    #sort the tweets and calculate new score and old score
+    #sort the tweets chronologically
     utils.sort_tweet(tweets)
+
+    #split the data in to ten buckets
+    bucketAverages = []
+    for i in range(0, 200, 10):
+        bucketSum = 0
+        for j in range(i, i+10):
+            bucketSum += tweets[j]["score"]
+        bucketAvg = bucketSum / 10
+        bucketAverages.append(bucketAvg)
+
+
     oldScoreSum = 0
-    for instance in tweets[0:100]:
-        oldScoreSum += instance["score"]
-    oldScore = oldScoreSum / 100
+    for score in bucketAverages[0:10]:
+        oldScoreSum += score
+    oldScore = oldScoreSum / 10
 
-    count = 0
     newScoreSum = 0
-    for instance in tweets[100:]:
-        newScoreSum += instance["score"]
-        count += 1
-
-    if count == 0: 
-        newScore = 0
-    else:
-        newScore = newScoreSum / count
-
+    for score in bucketAverages[10:20]:
+        newScoreSum += score
+    newScore = newScoreSum / 10
     change = utils.percent_change(oldScore, newScore)
-    return JsonResponse({"score": newScore, "change": change});
+
+    return JsonResponse({"score": newScore, "change": change, "historical data": bucketAverages});
 
 
 @api_view(["GET"])
