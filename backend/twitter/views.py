@@ -72,7 +72,7 @@ def getMoodIndex(request):
         searchKey = utils.advancedSearch([], any=nicknamesDict[collegeName])
 
     else:
-        searchKey = [collegeName]
+        searchKey = collegeName
 
     for tweet in tweepy.Cursor(api.search,
                                q = searchKey + " -filter:retweets",
@@ -99,7 +99,7 @@ def getMoodIndexAndChange(request):
     if collegeName in nicknamesDict:
         searchKey = utils.advancedSearch([], any = nicknamesDict[collegeName])
     else:
-        searchKey = [collegeName]
+        searchKey = collegeName
 
     mostPositiveTweetID = ""
     maxPos = -1
@@ -219,9 +219,9 @@ def getHealthIndexAndChange(request):
     # split the data in to ten buckets
     bucketAverages = []
 
-    for i in range(0, 80, 4):
+    for i in range(0, len(tweets), 4):
         bucketSum = 0
-        for j in range(i, i+4):
+        for j in range(i, len(tweets)):
             bucketSum += tweets[j]["score"]
         bucketAvg = bucketSum / 4
         bucketAverages.append(bucketAvg)
