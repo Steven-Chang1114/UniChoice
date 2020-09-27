@@ -45,7 +45,6 @@ def getHealthIndex(request):
         text = TextBlob(tweet.full_text)
         scoreSum += text.sentiment.polarity
         count += 1
-        print('========================= uc berkeley guo qi =========================')
 
     if count == 0: 
         avgScore = 0
@@ -76,8 +75,21 @@ def getMoodIndex(request):
 @api_view(["GET"])
 def getMoodIndexAndChange(request):
     tweets = []
+    nicknamesDict = utils.generateUniNameDict("./uniName.txt")
+    collegeName = request.GET.get("text")
+    if collegeName in nicknamesDict:
+        searchKey = utils.advancedSearch(collegeName, any = nicknamesDict[collegeName])
+    else:
+        searchKey = request.GET.get("text")
+
+    mostPositiveTweetID = ""
+    maxPos = -1
+
+    mostNegativeTweetID = ""
+    maxNeg = 1
+
     for tweet in tweepy.Cursor(api.search,
-                               q = request.GET.get("text") + " -filter:retweets",
+                               q = searchKey + " -filter:retweets",
                                rpp = 5,
                                lang="en",
                                tweet_mode="extended").items(200):
@@ -85,12 +97,22 @@ def getMoodIndexAndChange(request):
         text = TextBlob(tweet.full_text)
         instance["timestamp"] = tweet.created_at
         instance["score"] = text.sentiment.polarity
+        if (text.sentiment.polarity > maxPos):
+            mostPositiveTweetID = tweet.id_str
+            maxPos = text.sentiment.polarity
+
+        if (text.sentiment.polarity < maxNeg):
+            mostNegativeTweetID = tweet.id_str
+            maxNeg = text.sentiment.polarity
+
         tweets.append(instance)
     #sort the tweets chronologically
     utils.sort_tweet(tweets)
 
     #split the data in to ten buckets
     bucketAverages = []
+
+    
     for i in range(0, 200, 10):
         bucketSum = 0
         for j in range(i, i+10):
@@ -110,7 +132,11 @@ def getMoodIndexAndChange(request):
     newScore = newScoreSum / 10
     change = utils.percent_change(oldScore, newScore)
 
-    return JsonResponse({"score": newScore, "change": change, "historical data": bucketAverages});
+    return JsonResponse({"score": newScore,
+                         "change": change,
+                         "historical data": bucketAverages,
+                         "positive tweet id": mostPositiveTweetID,
+                         "negative tweet id": mostNegativeTweetID});
 
 
 @api_view(["GET"])
