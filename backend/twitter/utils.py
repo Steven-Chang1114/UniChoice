@@ -1,5 +1,7 @@
+import numpy as np
+
 # in-place sort tweets by their timestamp, in ascending order from oldest to latest
-def sort_tweet(tweet_list, descending = True):
+def sort_tweet(tweet_list, descending=True):
     tweet_list.sort(reverse = descending, key = lambda tweet: tweet["timestamp"])
 
 #generate a string for the twitter api to search tweet. Note this is advanced search
@@ -38,3 +40,6 @@ def advancedSearch(allOf, exact = None, any = None, none = None):
             string1 += (" -" + keyword)
 
     return string1
+
+def percent_change(old, new):
+    return np.round(((new-old) / old) * 100, 2)

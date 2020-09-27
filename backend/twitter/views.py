@@ -30,10 +30,9 @@ def getHealthIndex(request):
     anyWord = ["covid", "health", "social distancing", "virus", "safety"]
     allWord = request.GET.get("text")
 
-    utils.advancedSearch()
-
     for tweet in tweepy.Cursor(api.search,
-                               q=utils.advancedSearch(allWord, any=anyWord) + " covid" + " -filter:retweets", rpp=5,
+                               q=utils.advancedSearch(allWord, any=anyWord) + " -filter:retweets",
+                               rpp=5,
                                lang="en",
                                tweet_mode='extended').items(50):
         text = TextBlob(tweet.full_text)
@@ -43,24 +42,90 @@ def getHealthIndex(request):
     avgScore = scoreSum / count
     return JsonResponse({"score": avgScore});
 
-@api_view["GET"])
+@api_view(["GET"])
+def getMoodIndex(requst):
+    count = 0
+    scoreSum = 0
+    for tweet in tweepy.Cursor(api.search,
+                               q = request.GET.get("text") + " -filter:retweets",
+                               rpp = 5,
+                               lang="en",
+                               tweet_mode="extended").items(200):
+        text = TextBlob(tweet.full_text)
+        scoreSum += text.sentiment.polarity
+        count += 1
+    avgScore = scoreSum / count
+    return JsonResponse({"score": avgScore});
+
+
+@api_view(["GET"])
+def getMoodIndexAndChange(requst):
+    # count = 0
+    # scoreSum = 0
+    tweets = []
+    for tweet in tweepy.Cursor(api.search,
+                               q = request.GET.get("text") + " -filter:retweets",
+                               rpp = 5,
+                               lang="en",
+                               tweet_mode="extended").items(200):
+        instance = {}
+        text = TextBlob(tweet.full_text)
+        instance["timestamp"] = tweet.created_at
+        instance["score"] = text.sentiment.polarity
+        tweets.append(instance)
+
+
+    #sort the tweets and calculate new score and old score
+
+    utils.sort_tweet(tweets)
+    oldScoreSum = 0
+    for instance in tweets[0:100]:
+        oldScoreSum += instance["score"]
+    oldScore = oldScoreSum / 100
+
+    count = 0
+    newScoreSum = 0
+    for instance in tweet[100:]:
+        newScoreSum += instance["score"]
+        count += 1
+    newScore = newScoreSum / count
+
+    change = utils.percent_change(oldScore, newScore)
+
+    return JsonResponse({"score": newScore, "change": change});
 
 
 @api_view(["GET"])
 def getHealthIndexAndChange(request):
-    count = 0
-    scoreSum = 0
-
+    tweets = []
     anyWord = ["covid", "health", "social distancing", "virus", "safety"]
     allWord = request.GET.get("text")
-
-    utils.advancedSearch()
-
-    for tweet in tweepy.Cursor(api.search, q=utils.advancedSearch(allWord, any = anyWord) + " covid" + " -filter:retweets", rpp=5, lang="en",
-                               tweet_mode='extended').items(50):
+    for tweet in tweepy.Cursor(api.search,
+                               q=utils.advancedSearch(allWord, any=anyWord) + " -filter:retweets",
+                               rpp=5,
+                               lang="en",
+                               tweet_mode="extended").items(200):
+        instance = {}
         text = TextBlob(tweet.full_text)
-        scoreSum += text.sentiment.polarity
-        count += 1
+        instance["timestamp"] = tweet.created_at
+        instance["score"] = text.sentiment.polarity
+        tweets.append(instance)
 
-    avgScore = scoreSum / count
-    return JsonResponse({"score": avgScore});
+    # sort the tweets and calculate new score and old score
+
+    utils.sort_tweet(tweets)
+    oldScoreSum = 0
+    for instance in tweets[0:100]:
+        oldScoreSum += instance["score"]
+    oldScore = oldScoreSum / 100
+
+    count = 0
+    newScoreSum = 0
+    for instance in tweet[100:]:
+        newScoreSum += instance["score"]
+        count += 1
+    newScore = newScoreSum / count
+
+    change = utils.percent_change(oldScore, newScore)
+
+    return JsonResponse({"score": newScore, "change": change});
