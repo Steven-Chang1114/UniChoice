@@ -23,7 +23,5 @@ urlpatterns = [
 
 urlpatterns = [
     path('', views.homepage),
-    path('getsentiment', views.getsentiment),
     path('analyzehashtag', views.analyzehashtag),
-    path('gettweets', views.gettweets)
 ]
